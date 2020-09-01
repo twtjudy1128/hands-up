@@ -1,0 +1,63 @@
+body {
+    background-color: red;
+}
+h1 {
+    text-align:center ;
+    font-size: 6em;
+    margin: 3px auto;
+}
+.box {
+    float: left;
+}
+img.jason {
+    width: 150%;
+    height: 150%;
+}
+.camera {
+    position: relative;
+    left:5%;
+}
+.statham {
+    position: relative;
+    left:15%;
+}
+.balloon {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #FFF;
+    border: solid 3px #555;
+    box-sizing: border-box;
+    left:20%;
+}
+.balloon:before {
+    content: "";
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    margin-left: -15px;
+    border: 12px solid transparent;
+    border-bottom: 12px solid #FFF;
+    z-index: 2;
+  }
+  
+  .balloon:after {
+    content: "";
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    margin-left: -17px;
+    border: 14px solid transparent;
+    border-bottom: 14px solid #555;
+    z-index: 1;
+  }
+  
+  .balloon p {
+    margin: 0;
+    padding: 0;
+  }

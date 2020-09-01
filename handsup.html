@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hands Up!!!</title>
+    <link rel="stylesheet" href="handsup.css">
+  </head>
+  <body>
+    <h1>Freeze!! Hands Up!!</h1>
+    <div class="main">
+      <div class="box camera"> 
+        <div >
+          <video id="video" width="320" height="240" autoplay></video>
+          <audio id="sound-file" preload="auto">
+              <source src="sniperrifle--firing1.mp3" type="audio/mp3" controls>
+          </audio>
+        </div>
+        <div class="balloon">
+            <p>I don't wanna die!!</p>
+        </div>
+      </div>
+      <div class="box statham">
+           <img src="https://cdn-ak.f.st-hatena.com/images/fotolife/u/unias_tawa/20200804/20200804202742.jpg" class="jason"></image>
+      </div>
+    </div>
+    <script src="https://unpkg.com/ml5@latest/dist/ml5.min.js"></script>
+    <script>
+      // Model URL
+      const imageModelURL = 'https://teachablemachine.withgoogle.com/models/id9DYiz3Y/';
+
+      async function main() {
+        // カメラからの映像取得
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: false,
+          video: true,
+        });
+        // html内のidがvideoのdomを取得
+        const video = document.getElementById('video');
+        // videoにカメラ映像を適用
+        video.srcObject = stream;
+
+        // 自作モデルのロード
+        const classifier = ml5.imageClassifier(
+          imageModelURL + 'model.json',
+          video,
+          modelLoaded
+        );
+        // モデルのロード完了時に実行される
+        function modelLoaded() {
+          console.log('Model Loaded!');
+        }
+        // 繰り返し検出処理
+        classifier.classify(onDetect);
+        function onDetect(err, results) {
+          console.log(results);
+          if (results[0]) {
+            console.log(results[0].label);
+              //手を挙げてないときに音を出す
+              if (results[0].label === 'none') {
+                  // [FIX] sound 関数実行
+                  sound();   
+              }
+          }
+          classifier.classify(onDetect);
+        }
+
+        function sound(){
+            // 初回以外は音声ファイルを巻き戻す(再生位置[秒]を0に設定する)
+            if( typeof( document.getElementById('sound-file').currentTime ) != 'undefined' ){
+                document.getElementById('sound-file').currentTime = 0;
+            }
+            //音声ファイルを再生する
+            document.getElementById('sound-file').play();
+            
+        }
+
+      }
+      main();
+    </script>
+  </body>
+</html>
